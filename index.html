@@ -3,134 +3,245 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hindi Records</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <title>HINDI RECORDS</title>
     <style>
-        /* Inline CSS for demonstration, move to your style.css for production */
-        header {
+        /* General Reset */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: #333;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        /* Navbar */
+        .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 20px;
-            background-color: #333;
-            color: #fff;
+            padding: 20px 40px;
+            border-bottom: 1px solid #ddd;
+            background-color: #fff;
+            position: relative;
+            z-index: 1000;
         }
-        .logo h1 {
-            margin: 0;
+
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
         }
-        nav ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
+
+        /* Search Bar */
+        .search {
+            position: relative;
         }
-        nav ul li {
-            margin-right: 15px;
+
+        .search input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
         }
-        nav ul li a {
-            color: #fff;
-            text-decoration: none;
-        }
-        .search-bar {
-            display: flex;
-        }
-        .search-bar input[type="text"] {
-            padding: 5px;
+
+        .search button {
+            position: absolute;
+            right: 2px;
+            top: 2px;
+            bottom: 2px;
             border: none;
-            border-radius: 4px 0 0 4px;
-            outline: none;
-        }
-        .search-bar button {
-            padding: 5px 10px;
-            border: none;
-            background-color: #555;
+            background: #333;
             color: #fff;
-            border-radius: 0 4px 4px 0;
+            padding: 0 10px;
             cursor: pointer;
+            border-radius: 0 4px 4px 0;
         }
-        .search-bar button:hover {
-            background-color: #666;
+
+        /* Navigation Links for Desktop */
+        .links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .links a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+        }
+
+        /* Mobile Menu: Initially Hidden */
+        .menu-icon {
+            display: none;
+            font-size: 28px;
+            cursor: pointer;
+            position: absolute;
+            left: 10px; /* Adjust this value to move it closer or farther */
+            top: 20px; /* Adjust the vertical alignment */
+        }
+
+        .mobile-links {
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100%;
+            background-color: #fff;
+            box-shadow: 4px 0 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            gap: 30px;
+            transform: translateX(-100%); /* Hidden off-screen */
+            transition: transform 0.3s ease; /* Smooth sliding effect */
+            z-index: 999;
+        }
+
+        .mobile-links.active {
+            transform: translateX(0); /* Slide into view */
+        }
+
+        .mobile-links a {
+            text-decoration: none;
+            color: #333;
+            font-size: 18px;
+        }
+
+        /* Back Key (Close Button) */
+        .back-key {
+            font-size: 24px;
+            cursor: pointer;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .menu-icon {
+                display: block; /* Show hamburger icon on mobile */
+            }
+
+            .links {
+                display: none; /* Hide desktop links on mobile */
+            }
+        }
+
+        /* Content Section */
+        .content {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .content h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .content p {
+            font-size: 18px;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        /* Image Grid */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .image-grid img {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .image-grid img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid #ddd;
+            margin-top: 40px;
+            font-size: 14px;
+            color: #999;
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <h1>Hindi Records</h1>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="#about">About Us</a></li>
-                <li><a href="#artists">Artists</a></li>
-                <li><a href="#music">Music</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
+    <!-- Navigation Bar -->
+    <header class="navbar">
+        <!-- Hamburger Icon -->
+        <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+
+        <!-- Sliding Navigation Links for Mobile -->
+        <nav class="mobile-links" id="mobileMenu">
+            <!-- Back Key -->
+            <div class="back-key" onclick="closeMenu()">&#10006;</div>
+            <a href="#">Home</a>
+            <a href="#">Shop</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
         </nav>
-        <div class="search-bar">
-            <form action="#" method="get">
-                <input type="text" name="search" placeholder="Search...">
-                <button type="submit">Search</button>
-            </form>
+
+        <!-- Logo -->
+        <div class="logo">HINDI RECORDS</div>
+
+        <!-- Links for Desktop View -->
+        <nav class="links">
+            <a href="#">Home</a>
+            <a href="#">Shop</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+        </nav>
+
+        <!-- Search Bar -->
+        <div class="search">
+            <input type="text" placeholder="Search...">
+            <button onclick="searchFunction()">Go</button>
         </div>
     </header>
 
-    <section class="hero">
-        <div class="hero-content">
-            <h2>Feel the Beat</h2>
-            <p>Your gateway to the latest in Hindi Rap Music.</p>
-            <a href="https://www.youtube.com/channel/UC_Q-YjEXDN0ufkU4AoWhU1g" class="cta">Listen Now</a>
-        </div>
+    <!-- Main Content -->
+    <section class="content">
+        <h1>Welcome To Hindi Records</h1>
+        <p>Experience simplicity and elegance like never before.</p>
     </section>
 
-    <section id="about" class="about">
-        <h2>About Us</h2>
-        <p>Hindi Records is a leading name in the rap music industry, bringing you the raw energy and talent from the streets. We are dedicated to promoting Hindi rap artists and their music globally.</p>
+    <!-- Image Grid -->
+    <section class="image-grid">
+        <img src="1.jpg" alt="Fashion Item 1">
+        <img src="2.jpg" alt="Fashion Item 2">
+        <img src="3.jpg" alt="Fashion Item 3">
+        <img src="4.jpg" alt="Fashion Item 4">
     </section>
 
-    <section id="artists" class="artists">
-        <h2>Our Artists</h2>
-        <div class="artist-gallery">
-            <div class="artist">
-                <img src="mcstan.jpg" alt="Artist 1">
-                <h3>MC STAN</h3>
-            </div>
-            <div class="artist">
-                <img src="unnamed.jpg" alt="Artist 2">
-                <h3>KRSNA</h3>
-            </div>
-            <div class="artist">
-                <img src="raftaarsss.jpg" alt="Artist 3">
-                <h3>RAFTAAR</h3>
-            </div>
-        </div>
-    </section>
-
-    <section id="music" class="music">
-        <h2>Our Music</h2>
-        <div class="music-gallery">
-            <div class="music-track">
-                <img src="tadipaar.jpg" alt="Album 1">
-                <h3>Tadipaar</h3>
-                <p>MC Stan</p>
-            </div>
-            <div class="music-track">
-                <img src="still.jpg" alt="Album 2">
-                <h3>Still Here</h3>
-                <p>KSRNA</p>
-            </div>
-            <div class="music-track">
-                <img src="nair.jpg" alt="Album 3">
-                <h3>Mr. Nair</h3>
-                <p>Raftaar</p>
-            </div>
-        </div>
-    </section>
-
+    <!-- Footer -->
     <footer>
-        <p>&copy; 2024 Hindi Records. All rights reserved.</p>
-        <p><a href="#contact">Shubham Tiwari</a></p>
-        <p><a>This is a demo website</a></p>
+        &copy; HINDI RECORDS. All Rights Reserved.
     </footer>
+
+    <!-- JavaScript -->
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById("mobileMenu");
+            menu.classList.add("active");
+        }
+
+        function closeMenu() {
+            const menu = document.getElementById("mobileMenu");
+            menu.classList.remove("active");
+        }
+
+        function searchFunction() {
+            alert("Search functionality coming soon!");
+        }
+    </script>
 </body>
 </html>
